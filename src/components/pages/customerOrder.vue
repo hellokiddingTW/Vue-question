@@ -56,7 +56,7 @@
       </div>
     </div>
 
-    <div class="my-5 row justify-content-center">
+    <div class="my-5 row justify-content-center" v-if="cart.total != 0">
       <div class="col-md-6">
         <table class="table">
           <thead>
@@ -66,7 +66,7 @@
             <th>單價</th>
           </thead>
           <tbody>
-            <tr v-for="item in cart.carts" :key="item.id" v-if="cart.carts">
+            <tr v-for="item in cart.carts" :key="item.id">
               <td class="align-middle">
                 <button
                   type="button"
@@ -98,9 +98,14 @@
           </tfoot>
         </table>
         <div class="input-group mb-3 input-group-sm">
-          <input type="text" class="form-control" placeholder="請輸入優惠碼" />
+          <input
+            type="text"
+            class="form-control"
+            placeholder="請輸入優惠碼"
+            v-model="coupon_code"
+          />
           <div class="input-group-append">
-            <button class="btn btn-outline-secondary" type="button">
+            <button class="btn btn-outline-secondary" type="button" @click="addCouponCode">
               套用優惠碼
             </button>
           </div>
@@ -196,6 +201,7 @@ export default {
       products: [],
       product: {},
       cart: {},
+      coupon_code: "",
     };
   },
   methods: {
@@ -216,8 +222,9 @@ export default {
       const vm = this;
       vm.status.loadingItem = id;
       this.$http.get(api).then((response) => {
+        response.data.product.num = 1;
         vm.isLoading = false;
-        vm.product = response.data.product;  
+        vm.product = response.data.product;
         $("#productModal").modal("show");
         vm.pagination = response.data.pagination;
         vm.status.loadingItem = "";
@@ -249,7 +256,7 @@ export default {
       vm.isLoading = true;
       this.$http.get(api).then((response) => {
         vm.cart = response.data.data;
-        console.log(response);
+        console.log(response.data.data);
         vm.isLoading = false;
         // console.log(vm.pagination);
       });
@@ -263,7 +270,24 @@ export default {
         console.log(response);
         vm.isLoading = false;
         vm.getCart();
-        
+
+        // console.log(vm.pagination);
+      });
+    },
+    
+    addCouponCode() {
+       const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/coupon`;
+       const vm = this;
+       const coupon = {
+         code:
+           vm.coupon_code,
+       }
+      vm.isLoading = true;
+      this.$http.post(api,{data:{coupon}}).then((response) => {
+        console.log(response);
+        vm.isLoading = false;
+        vm.getCart();
+
         // console.log(vm.pagination);
       });
     },

@@ -9,11 +9,15 @@ import VueAxios from 'vue-axios'; //將它轉為vue的套件
 import router from './router';
 import Loading from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/vue-loading.css';
+
+
 import './bus';
+import dateFilter from './filters/date';
 
 Vue.config.productionTip = false
 Vue.use(VueAxios, axios)
 Vue.component('loading', Loading)
+Vue.filter('date', dateFilter);
 
 axios.defaults.withCredentials = true;
 

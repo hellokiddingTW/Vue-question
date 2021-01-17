@@ -242,7 +242,6 @@
         </div>
       </div>
     </div>
-
     <!-- Modal Delete -->
   </div>
 </template>
@@ -286,7 +285,7 @@ export default {
       if (isNew) {
         this.tempProduct = {};
         this.isNew = true;
-        vm.status.fileDone = false;
+        this.status.fileDone = false;
       } else {
         this.tempProduct = Object.assign({}, item);
         this.isNew = false;
@@ -317,8 +316,8 @@ export default {
 
     deleteProduct(item) {
       const vm = this;
-      this.tempProduct = Object.assign({}, item);
-      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/admin/product/${vm.tempProduct.id}`;
+      // this.tempProduct = Object.assign({}, item);
+      const api = `${process.env.APIPATH}/api/${process.env.CUSTOMPATH}/admin/product/${item.id}`;
       this.$http.delete(api).then((response) => {
         this.getProducts();
       });
@@ -350,6 +349,7 @@ export default {
             this.$bus.$emit("message:push", response.data.message, "danger");
           }
         });
+        
     },
   },
   created() {

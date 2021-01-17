@@ -8,6 +8,7 @@ import Dashboard from'@/components/dashboard';
 import Login from'@/components/pages/login';
 import Products from'@/components/pages/products';
 import Coupon from'@/components/pages/coupon';
+import Orders from'@/components/pages/orders';
 import CustomerOrder from'@/components/pages/customerOrder';
 
 
@@ -46,6 +47,12 @@ export default new VueRouter({
                     name: '優惠卷',
                     path: 'coupon',
                     component: Coupon,
+                    meta: { requiresAuth: true },
+                },
+                {
+                    name: '訂單列表',
+                    path: 'orders',
+                    component: Orders,
                     meta: { requiresAuth: true },
                 },
             ]
